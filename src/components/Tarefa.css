@@ -1,0 +1,11 @@
+.btn_add{
+
+    background-color: red;
+    border-radius: 5px;
+
+}
+
+.concluida {
+    text-decoration: line-through;
+    color: red;
+}
