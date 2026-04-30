@@ -12,8 +12,9 @@ import { useState } from "react";
 
     // quando mudar o valor no evento (e), seta o novo valor  evento.alvo.valor = e.target.value
     const onChange = (e) => {
+
         setValor(e.target.value);
-        console.log("OnChange hook");
+        
     }
 
 
