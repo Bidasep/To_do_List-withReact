@@ -1,40 +1,43 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import reactLogo from '../assets/react.svg';
 import useInput from "../hooks/useInput";
 import Tarefa from "./Tarefa";
-import './ListaTarefas.css'
+import './ListaTarefas.css';
+import useLocalStorage from "../hooks/localStorage";
 
 
 
 function ListaTarefas() {
 
   // Para criar uma novo Objeto tarefa
-  const [tarefas, setTarefas] = useState(() => {
-
-    const tarefasSalvas = localStorage.getItem("tarefas");
-
-    return tarefasSalvas? JSON.parse(tarefasSalvas) : [];
-
-  });
+  /*   const local = useLocalStorage(); */
+  const { tarefas, setTarefas } = useLocalStorage();
   const tarefa = useInput();
+  const [loading, setLoading] = useState(true);
+  const [vazio, setVazio] = useState(true);
 
-  /* localStorage.clear(); */
+  console.log("RENDERIZOU");
 
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000); // simula carregamento
+  }, []);
 
 /*   useEffect(() => {
-    const tarefasSalvas = localStorage.getItem("tarefas");
 
-    if (tarefasSalvas) {
-      const tarefasConvertidas = JSON.parse(tarefasSalvas);
-      console.log(tarefasConvertidas);
-      setTarefas(tarefasConvertidas);
-    }
-  }, []) */
+    useLocalStorage();
 
-    useEffect(() => {
+    tarefas ? setVazio(true) : setVazio(false); // simula carregamento
+  }, [tarefas]); */
 
-      localStorage.setItem("tarefas", JSON.stringify(tarefas))
+  console.log(loading);
+  console.log(tarefas);
 
-  }, [tarefas])
+
+
+
 
 
 
@@ -64,8 +67,7 @@ function ListaTarefas() {
 
   function alternarConcluida(id) {
 
-    const itemAtualizado = tarefas.map(tarefa => tarefa.id == id ? { ...tarefa, concluida: !tarefa.concluida }
-      : tarefa);
+    const itemAtualizado = tarefas.map(tarefa => tarefa.id === id ? { ...tarefa, concluida: !tarefa.concluida } : tarefa);
 
     setTarefas(itemAtualizado);
 
@@ -73,7 +75,15 @@ function ListaTarefas() {
   }
 
 
+  if (loading) {
 
+    return (
+      <>
+        <img src={reactLogo} alt="Logo react" />
+        <h3>Carregando tarefas ...</h3>
+      </>
+    )
+  }
 
 
 
@@ -82,7 +92,7 @@ function ListaTarefas() {
       <form onSubmit={handleSubmit}>
 
 
-        <input type="text"
+        <input className="input-tar" type="text"
 
           placeholder="Digite a Nova Tarefa"
           value={tarefa.valor}
@@ -92,14 +102,47 @@ function ListaTarefas() {
         <button className="btn_nova-tarefa" type="submit">Adicionar nova Tarefa</button>
       </form>
 
+
+
       <ul>
         {tarefas.map(tarefa => <Tarefa key={tarefa.id} texto={tarefa.texto} id={tarefa.id} removeTarefa={removeTarefa} concluida={tarefa.concluida} alternarConcluida={alternarConcluida} />)}
 
       </ul>
+
     </>
 
   )
+
+  if (tarefas.length == 0) {
+
+    return (
+      <>
+        <form onSubmit={handleSubmit}>
+
+
+          <input className="input-tar" type="text"
+
+            placeholder="Digite a Nova Tarefa"
+            value={tarefa.valor}
+            onChange={tarefa.onChange}
+          />
+
+          <button className="btn_nova-tarefa" type="submit">Adicionar nova Tarefa</button>
+        </form>
+
+
+        <img src={reactLogo} alt="Logo react" />
+        <h3>Voce não tem Tarefas no momento. Clique em adicionar tarefas.</h3>
+
+      </>
+
+    )
+
+  }
 }
+
+
+
 
 
 

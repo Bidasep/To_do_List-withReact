@@ -3,13 +3,17 @@ import ListaTarefas from "./ListaTarefas";
 import './Tarefa.css'
 
 
-function Tarefa({ texto, id , removeTarefa, concluida, alternarConcluida }) {
+function Tarefa({ texto, id, removeTarefa, concluida, alternarConcluida }) {
+
+    console.log("componente montado");
 
 
     return (
 
         <li> <input type="Checkbox"
-            onChange={ () => alternarConcluida(id)}
+            checked={concluida}
+            onChange={() => alternarConcluida(id)}
+
         />
             <span className={concluida ? 'concluida' : 'pendente'} >{texto}</span>
 
