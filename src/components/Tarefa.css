@@ -2,10 +2,26 @@
 
     background-color: red;
     border-radius: 5px;
+    display: flex;
+    justify-content: flex-end
 
 }
-
 .concluida {
     text-decoration: line-through;
     color: red;
+}
+
+.btn_concluida {
+    background-color: green;
+    border-radius: 100px;
+    color: black;
+}
+.btn_pendente {
+    color: black;
+    border-radius: 100px;
+    background-color: yellow;
+}
+.btn_div {
+    display: flex;
+    flex-direction: row;
 }

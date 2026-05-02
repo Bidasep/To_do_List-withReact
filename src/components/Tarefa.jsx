@@ -10,15 +10,20 @@ function Tarefa({ texto, id, removeTarefa, concluida, alternarConcluida }) {
 
     return (
 
-        <li> <input type="Checkbox"
+
+        <li className="lista" > <input type="Checkbox"
             checked={concluida}
             onChange={() => alternarConcluida(id)}
 
         />
             <span className={concluida ? 'concluida' : 'pendente'} >{texto}</span>
 
-            <button className="btn_add" id={id} type="button" onClick={() => removeTarefa(id)} >Remover</button>
+            <div className="btn_div">
+                <button className={concluida ? 'btn_concluida' : 'btn_pendente'} id={id} type="Checkbox" onClick={() => alternarConcluida(id)} >&#10003;</button>
+                <button className="btn_add" id={id} type="button" onClick={() => removeTarefa(id)} >Remover</button>
+            </div>
         </li>
+
 
     )
 

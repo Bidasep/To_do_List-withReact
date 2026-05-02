@@ -15,6 +15,7 @@ function ListaTarefas() {
   const tarefa = useInput();
   const [loading, setLoading] = useState(true);
   const [vazio, setVazio] = useState(true);
+  const [filter, setFilter] = useState(false);
 
   console.log("RENDERIZOU");
 
@@ -25,12 +26,12 @@ function ListaTarefas() {
     }, 2000); // simula carregamento
   }, []);
 
-/*   useEffect(() => {
-
-    useLocalStorage();
-
-    tarefas ? setVazio(true) : setVazio(false); // simula carregamento
-  }, [tarefas]); */
+  /*   useEffect(() => {
+  
+      useLocalStorage();
+  
+      tarefas ? setVazio(true) : setVazio(false); // simula carregamento
+    }, [tarefas]); */
 
   console.log(loading);
   console.log(tarefas);
@@ -74,13 +75,18 @@ function ListaTarefas() {
 
   }
 
+  const alternarFiltroConcluida = () => { setFilter(false) };
+
+
+
+
 
   if (loading) {
 
     return (
       <>
         <img src={reactLogo} alt="Logo react" />
-        <h3>Carregando tarefas ...</h3>
+        <h3>Carregando tarefas...</h3>
       </>
     )
   }
@@ -103,9 +109,21 @@ function ListaTarefas() {
       </form>
 
 
+        <h3>Minhas Tarefas</h3>
+        <div className="selector">
+
+         <button className = "Check_Concluidas" type="Checkbox"><input className = "Check_Concluidas" type="CheckBox" /><span className = "Check_Concluidas">Concluidas</span></button>
+         <button className = "Check_Pendentes" ><input className = "Check_Pendentes" type="CheckBox" /><span className = "Check_Pendentes">Pendentes</span></button>  
+
+        </div>
 
       <ul>
-        {tarefas.map(tarefa => <Tarefa key={tarefa.id} texto={tarefa.texto} id={tarefa.id} removeTarefa={removeTarefa} concluida={tarefa.concluida} alternarConcluida={alternarConcluida} />)}
+
+
+
+        {tarefas
+          /* .filter(tarefa => tarefa.concluida === true) */
+          .map(tarefa => <Tarefa  key={Tarefa.id} texto={tarefa.texto} id={tarefa.id} removeTarefa={removeTarefa} concluida={tarefa.concluida} alternarConcluida={alternarConcluida} />)}
 
       </ul>
 
