@@ -1,23 +1,26 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useMemo, memo, useState, useContext } from "react";
 import reactLogo from '../assets/react.svg';
 import useInput from "../hooks/useInput";
 import Tarefa from "./Tarefa";
 import './ListaTarefas.css';
 import useLocalStorage from "../hooks/localStorage";
-
+import { TarefaContext } from "../contexts/TarefaContext";
 
 
 function ListaTarefas() {
 
-  // Para criar uma novo Objeto tarefa
-  /*   const local = useLocalStorage(); */
-  const { tarefas, setTarefas } = useLocalStorage();
-  const tarefa = useInput();
-  const [loading, setLoading] = useState(true);
-  const [vazio, setVazio] = useState(true);
-  const [filter, setFilter] = useState(false);
+  const {
+  tarefas,
+  setTarefas,
+  removeTarefa,
+  alternarConcluida,
+  filter,
+  setFilter
+} = useContext(TarefaContext);
 
-  console.log("RENDERIZOU");
+const [loading, setLoading] = useState(true);
+const tarefa = useInput();
+
 
 
   useEffect(() => {
@@ -25,22 +28,6 @@ function ListaTarefas() {
       setLoading(false);
     }, 2000); // simula carregamento
   }, []);
-
-  /*   useEffect(() => {
-  
-      useLocalStorage();
-  
-      tarefas ? setVazio(true) : setVazio(false); // simula carregamento
-    }, [tarefas]); */
-
-  console.log(loading);
-  console.log(tarefas);
-
-
-
-
-
-
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -60,22 +47,18 @@ function ListaTarefas() {
 
   }
 
-  function removeTarefa(id) {
-    const itemRemovido = tarefas.filter(tarefa => tarefa.id !== id);
-
-    setTarefas(itemRemovido);
-  }
-
-  function alternarConcluida(id) {
-
-    const itemAtualizado = tarefas.map(tarefa => tarefa.id === id ? { ...tarefa, concluida: !tarefa.concluida } : tarefa);
-
-    setTarefas(itemAtualizado);
 
 
-  }
+  const tarefasFiltradas = useMemo(() => {
+    if (filter === "concluidas") {
+      return tarefas.filter(tarefa => tarefa.concluida === true);
+    }
+    if (filter === "pendentes") {
+      return tarefas.filter(tarefa => tarefa.concluida === false);
+    }
 
-  const alternarFiltroConcluida = () => { setFilter(false) };
+    return tarefas;
+  }, [tarefas, filter]);
 
 
 
@@ -92,6 +75,35 @@ function ListaTarefas() {
   }
 
 
+  // TODAS
+
+   if (tarefas.length == 0) {
+  
+      return (
+        <>
+          <form onSubmit={handleSubmit}>
+  
+  
+            <input className="input-tar" type="text"
+  
+              placeholder="Digite a Nova Tarefa"
+              value={tarefa.valor}
+              onChange={tarefa.onChange}
+            />
+  
+            <button className="btn_nova-tarefa" type="submit">Adicionar nova Tarefa</button>
+          </form>
+  
+  
+          <img src={reactLogo} alt="Logo react" />
+          <h3>Voce não tem Tarefas no momento. Clique em adicionar tarefas.</h3>
+  
+        </>
+  
+      )
+  
+    } 
+  
 
   return (
     <>
@@ -109,54 +121,35 @@ function ListaTarefas() {
       </form>
 
 
-        <h3>Minhas Tarefas</h3>
-        <div className="selector">
+      <h3>Minhas Tarefas</h3>
+      <div className="selector">
 
-         <button className = "Check_Concluidas" type="Checkbox"><input className = "Check_Concluidas" type="CheckBox" /><span className = "Check_Concluidas">Concluidas</span></button>
-         <button className = "Check_Pendentes" ><input className = "Check_Pendentes" type="CheckBox" /><span className = "Check_Pendentes">Pendentes</span></button>  
+        <button className="Check_Concluidas" type="Checkbox" onClick={() => setFilter("concluidas")}>
+          <span className="Check_Concluidas">Concluidas</span>
+        </button>
 
-        </div>
+        <button className="Check_todas" onClick={() => setFilter("todas")}>
+          <span className="Check_Pendentes">Todas</span>
+        </button>
+
+        <button className="Check_Pendentes" onClick={() => setFilter("pendentes")} >
+          <span className="Check_Pendentes">Pendentes</span>
+        </button>
+
+      </div>
 
       <ul>
 
 
 
-        {tarefas
-          /* .filter(tarefa => tarefa.concluida === true) */
-          .map(tarefa => <Tarefa  key={Tarefa.id} texto={tarefa.texto} id={tarefa.id} removeTarefa={removeTarefa} concluida={tarefa.concluida} alternarConcluida={alternarConcluida} />)}
+        {tarefasFiltradas
+          .map(tarefa => <Tarefa key={tarefa.id} texto={tarefa.texto} id={tarefa.id} removeTarefa={removeTarefa} concluida={tarefa.concluida} alternarConcluida={alternarConcluida} />)}
 
       </ul>
 
     </>
 
   )
-
-  if (tarefas.length == 0) {
-
-    return (
-      <>
-        <form onSubmit={handleSubmit}>
-
-
-          <input className="input-tar" type="text"
-
-            placeholder="Digite a Nova Tarefa"
-            value={tarefa.valor}
-            onChange={tarefa.onChange}
-          />
-
-          <button className="btn_nova-tarefa" type="submit">Adicionar nova Tarefa</button>
-        </form>
-
-
-        <img src={reactLogo} alt="Logo react" />
-        <h3>Voce não tem Tarefas no momento. Clique em adicionar tarefas.</h3>
-
-      </>
-
-    )
-
-  }
 }
 
 
@@ -165,4 +158,4 @@ function ListaTarefas() {
 
 
 
-export default ListaTarefas;
+  export default ListaTarefas;

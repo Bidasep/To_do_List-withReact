@@ -1,5 +1,4 @@
-import { memo, useState } from "react"
-import ListaTarefas from "./ListaTarefas";
+import { memo } from "react"
 import './Tarefa.css'
 
 

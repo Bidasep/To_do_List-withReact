@@ -21,7 +21,10 @@
     border-radius: 100px;
     background-color: yellow;
 }
+
+
 .btn_div {
     display: flex;
     flex-direction: row;
+    gap: 10px;
 }
