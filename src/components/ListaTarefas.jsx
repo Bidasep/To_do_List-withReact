@@ -3,7 +3,7 @@ import reactLogo from '../assets/react.svg';
 import useInput from "../hooks/useInput";
 import Tarefa from "./Tarefa";
 import './ListaTarefas.css';
-import useLocalStorage from "../hooks/localStorage";
+import useLocalStorage from "../hooks/useLocalStorage"
 import { TarefaContext } from "../contexts/TarefaContext";
 
 

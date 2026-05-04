@@ -3,7 +3,7 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "./assets/vite.svg";
 import ListaTarefas from "./components/ListaTarefas";
 import { TarefaContext } from "./contexts/TarefaContext";
-import useLocalStorage from "./hooks/localStorage";
+import useLocalStorage from "./hooks/useLocalStorage";
 import useInput from "./hooks/useInput";
 
 function App() {
